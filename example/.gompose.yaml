@@ -1,0 +1,15 @@
+processes:
+  job1:
+    name: Say-Yes
+    command: "echo '{\"test\": 12344}' | jq -c ."
+    spawn: ["/bin/bash", "-c"]
+    format:
+      fgcolor: "cyan" 
+      bgcolor: "black"
+      header: "[{{.Proc.Name}}|{{.Now.Format \"15:04:05\"}}] "
+  job2:
+    name: JSON
+    command: "echo '{\"json\": 777}' | jq -c ."
+    format:
+      fgcolor: "red"
+      bgcolor: "black"
