@@ -26,6 +26,13 @@ type headerParams struct {
 	Now  time.Time
 }
 
+// FIXME handle lock in a better way
+var lock *sync.Mutex
+
+func init() {
+	lock = new(sync.Mutex)
+}
+
 func New(conf *config.Process, writer io.Writer) (*Logger, error) {
 	var err error
 	l := &Logger{
@@ -54,12 +61,15 @@ func (l *Logger) Write(p []byte) (int, error) {
 			if err != nil {
 				return 0, err
 			}
+			lock.Lock()
 			l.color.Fprint(l.writer, tmplBuf.String())
 			l.writer.Write(line)
+			lock.Unlock()
 		}
 		if err != nil {
 			break
 		}
 	}
+	bufferpool.Free(tmplBuf)
 	return len(p), nil
 }

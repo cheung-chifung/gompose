@@ -2,6 +2,7 @@ package proc
 
 import (
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"sync"
@@ -14,6 +15,7 @@ import (
 type Processes struct {
 	processes map[string]*Process
 	Config    *config.Config
+	*sync.WaitGroup
 	*sync.Mutex
 }
 
@@ -28,6 +30,7 @@ func NewProcesses(conf *config.Config, output io.Writer) *Processes {
 		processes: make(map[string]*Process),
 		Config:    conf,
 		Mutex:     new(sync.Mutex),
+		WaitGroup: new(sync.WaitGroup),
 	}
 	for _, pConf := range conf.Processes {
 		ps.add(pConf, output)
@@ -35,14 +38,18 @@ func NewProcesses(conf *config.Config, output io.Writer) *Processes {
 	return ps
 }
 
-func (ps *Processes) Spawn() error {
+func (ps *Processes) Spawn() {
+	ps.WaitGroup.Add(len(ps.processes))
 	for _, p := range ps.processes {
-		err := p.Spawn()
-		if err != nil {
-			return err
-		}
+		go func(p *Process) {
+			defer ps.WaitGroup.Done()
+			if err := p.Spawn(); err != nil {
+				// TODO should handle error better
+				log.Fatal(err)
+			}
+		}(p)
 	}
-	return nil
+	ps.WaitGroup.Wait()
 }
 
 func (ps *Processes) add(conf *config.Process, output io.Writer) (*Process, error) {
@@ -67,6 +74,7 @@ func (p *Process) Spawn() error {
 	cmd := exec.Command(cmdName, cmdArgs...)
 	cmd.Env = os.Environ()
 
+	log.Println("ready to start", p.Config.ID)
 	f, err := pty.Start(cmd)
 	if err != nil {
 		return err

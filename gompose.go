@@ -15,8 +15,5 @@ func main() {
 	}
 	ps := proc.NewProcesses(conf, os.Stdout)
 
-	err = ps.Spawn()
-	if err != nil {
-		log.Fatal(err)
-	}
+	ps.Spawn()
 }
