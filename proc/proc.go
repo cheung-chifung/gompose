@@ -74,7 +74,6 @@ func (p *Process) Spawn() error {
 	cmd := exec.Command(cmdName, cmdArgs...)
 	cmd.Env = os.Environ()
 
-	log.Println("ready to start", p.Config.ID)
 	f, err := pty.Start(cmd)
 	if err != nil {
 		return err
