@@ -21,7 +21,7 @@ Gompose is inspired from following works:
 $ touch .gompose.yaml
 ```
 
-edit `.gompose.yaml` and add processes setting
+edit `.gompose.yaml` and add processes settings.
 
 ```yaml
 processes:
@@ -49,13 +49,14 @@ $ gompose
 
 ## Features
 
-[x] Spawn processes according to `.gompose.yaml` file with colorized log.
-[ ] Cache logs into [BoltDB](https://github.com/boltdb/bolt), index logs locally with [bleve](http://www.blevesearch.com/).
-[ ] Add interactive cli mode and allow user to filter/search logs.
-[ ] More options, like environment variables, signal trapping, etc.
-[ ] Support docker-compose-like options for docker.
-[ ] Add HTTP UI.
-[ ] Add tests
+- [x] Spawn processes according to `.gompose.yaml` file with colorized log.
+- [ ] Cache logs into [BoltDB](https://github.com/boltdb/bolt), index logs locally with [bleve](http://www.blevesearch.com/).
+- [ ] Add interactive cli mode and allow user to filter/search logs.
+- [ ] Add cli tool to start/stop/restart process.
+- [ ] More options, like environment variables, signal trapping, etc.
+- [ ] Support docker-compose-like options for docker.
+- [ ] Add HTTP UI.
+- [ ] Add tests.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
