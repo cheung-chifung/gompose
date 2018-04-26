@@ -2,7 +2,7 @@
 
 Gompose is a configurable process management application for local development.
 
-Gompose is inspired from following works:
+Gompose is inspired by following works:
 
 * https://github.com/mattn/goreman
 * https://github.com/kimmobrunfeldt/concurrently
@@ -55,6 +55,7 @@ $ gompose
 - [ ] Add cli tool to start/stop/restart process.
 - [ ] More options, like environment variables, signal trapping, etc.
 - [ ] Support docker-compose-like options for docker.
+- [ ] Support k8s-like options.
 - [ ] Add HTTP UI.
 - [ ] Add tests.
 
