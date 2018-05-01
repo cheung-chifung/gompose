@@ -50,8 +50,10 @@ func New(conf *config.Process, writer io.Writer) (*Logger, error) {
 
 func (l *Logger) Write(p []byte) (int, error) {
 	buf := bytes.NewBuffer(p)
-	tmplBuf := bufferpool.Get()
 	for {
+		tmplBuf := bufferpool.Get()
+		defer bufferpool.Free(tmplBuf)
+
 		line, err := buf.ReadBytes('\n')
 		if len(line) > 1 {
 			err := l.header.Execute(tmplBuf, &headerParams{
@@ -70,6 +72,5 @@ func (l *Logger) Write(p []byte) (int, error) {
 			break
 		}
 	}
-	bufferpool.Free(tmplBuf)
 	return len(p), nil
 }
